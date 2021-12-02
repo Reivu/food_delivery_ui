@@ -21,4 +21,12 @@ List<Menu> menu = [
     imgUrl: 'assets/icons/drink.svg',
     menuName: 'Drinks',
   ),
+  Menu(
+    imgUrl: 'assets/icons/donut.svg',
+    menuName: 'Snacks',
+  ),
+  Menu(
+    imgUrl: 'assets/icons/burger.svg',
+    menuName: 'Fast Foods',
+  ),
 ];

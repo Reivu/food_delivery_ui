@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_delivery_ui/models/menu_model.dart';
+import 'package:flutter_food_delivery_ui/models/resto_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,8 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 //List Menus
                 _buildMenus(),
+                //Restaurants
                 const Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     'Popular Restaurants',
                     style: TextStyle(
@@ -68,7 +70,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                Container(),
+                Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                    itemCount: restaurants.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Restaurants restaurant = restaurants[index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10.0),
+                        height: 80.0,
+                        color: Colors.amber,
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 80.0,
+                              width: 80.0,
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  restaurant.name,
+                                  style: const TextStyle(
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(restaurant.category),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
               ],
             ),
           ],
@@ -133,11 +174,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMenus() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      height: 130.0,
+    return SizedBox(
+      height: 140.0,
       // color: Colors.amber,
       child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
         scrollDirection: Axis.horizontal,
         itemCount: menu.length,
         itemBuilder: (BuildContext context, int index) {
