@@ -18,9 +18,22 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  _buildRatings(int rating) {
+    String stars = '';
+    for (int i = 0; i < rating; i++) {
+      stars += '⭐ ';
+    }
+    stars.trim();
+    return Text(
+      stars,
+      style: const TextStyle(
+        fontSize: 10.0,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -70,50 +83,83 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                    itemCount: restaurants.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Restaurants restaurant = restaurants[index];
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        height: 80.0,
-                        color: Colors.amber,
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 80.0,
-                              width: 80.0,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  restaurant.name,
-                                  style: const TextStyle(
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(restaurant.category),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                )
+                _buildRestaurants()
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildRestaurants() {
+    return Expanded(
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        itemCount: restaurants.length,
+        itemBuilder: (BuildContext context, int index) {
+          Restaurants restaurant = restaurants[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                '/restaurant',
+                arguments: restaurant,
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              height: 80.0,
+              // color: Colors.blue,
+              child: Row(
+                children: [
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image.asset(
+                        restaurant.imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          restaurant.name,
+                          style: const TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(restaurant.category),
+                        Row(
+                          children: [
+                            _buildRatings(restaurant.star),
+                            const SizedBox(width: 5.0),
+                            Text(restaurant.review.toString()),
+                            const SizedBox(width: 5.0),
+                            Text(
+                              '(${restaurant.comment.toString()} Reviews)',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -218,10 +264,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      SizedBox(
-                        height: 45.0,
+                      SvgPicture.asset(
+                        menus.imgUrl,
                         width: 45.0,
-                        child: SvgPicture.asset(menus.imgUrl),
+                        height: 45.0,
                       ),
                     ],
                   ),
