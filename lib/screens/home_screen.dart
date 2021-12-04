@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_delivery_ui/models/menu_model.dart';
 import 'package:flutter_food_delivery_ui/models/resto_model.dart';
+import 'package:flutter_food_delivery_ui/widgets/home/address.dart';
+import 'package:flutter_food_delivery_ui/widgets/home/search.dart';
+import 'package:flutter_food_delivery_ui/widgets/home/top_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,30 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Top Icons
-                _buildTopIcons(),
+                const TopIcons(),
                 //Address
-                _buildAddress(),
+                const Address(),
                 //Search
-                Container(
-                  margin: const EdgeInsets.all(20.0),
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: const TextField(
-                    textAlignVertical: TextAlignVertical.center,
-                    cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      hintText: 'Search for restaurant, food etc',
-                      prefixIcon: Icon(
-                        Icons.search_rounded,
-                        color: Colors.grey,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
+                const Search(),
                 //List Menus
                 _buildMenus(),
                 //Restaurants
@@ -101,6 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (BuildContext context, int index) {
           Restaurants restaurant = restaurants[index];
           return GestureDetector(
+            //For tapping translucent background
+            behavior: HitTestBehavior.translucent,
             onTap: () {
               Navigator.of(context).pushNamed(
                 '/restaurant',
@@ -110,20 +96,17 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10.0),
               height: 80.0,
-              // color: Colors.blue,
               child: Row(
                 children: [
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
+                  Hero(
+                    tag: restaurant.imageUrl,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
                       child: Image.asset(
                         restaurant.imageUrl,
                         fit: BoxFit.cover,
+                        height: 80.0,
+                        width: 80.0,
                       ),
                     ),
                   ),
@@ -160,61 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildAddress() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Deliver to',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18.0,
-            ),
-          ),
-          const SizedBox(height: 5.0),
-          Row(
-            children: const [
-              Icon(Icons.place_outlined),
-              Text(
-                'Jl.Kaliurang, Yogyakarta',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTopIcons() {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notes_rounded,
-              size: 32.0,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.shopping_bag_outlined,
-              size: 32.0,
-            ),
-          ),
-        ],
       ),
     );
   }
