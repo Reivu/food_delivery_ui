@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_delivery_ui/models/resto_model.dart';
 import 'package:flutter_food_delivery_ui/widgets/home/top_icons.dart';
 import 'package:flutter_food_delivery_ui/widgets/restaurant/delivery.dart';
+import 'package:flutter_food_delivery_ui/widgets/restaurant/menu_list.dart';
 
 class RestaurantScreen extends StatelessWidget {
   final Restaurants restaurants;
@@ -51,6 +52,10 @@ class RestaurantScreen extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+            //List Menu
+            const Expanded(
+              child: MenuList(),
             ),
           ],
         ),
